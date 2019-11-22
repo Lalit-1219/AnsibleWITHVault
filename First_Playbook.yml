@@ -1,0 +1,26 @@
+---
+- name: Create a new Demo EC2 instance
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - secret.yml
+  tasks:
+    - name: Create an ec2 instance
+      ec2:
+         key_name: NewKey
+         group: default  # security group name
+         instance_type: t2.micro
+         image: ami-00068cd7555f543d5
+         aws_access_key: "{{AWS_ACCESS_KEY}}"
+         aws_secret_key: "{{AWS_SECRET_KEY}}"
+         wait: true
+         region: us-east-1
+         count: 0  # default
+         count_tag:
+            Name: Demo
+         instance_tags:
+            Name: Demo
+         vpc_subnet_id: subnet-51d5b60d
+         assign_public_ip: yes
+      register: ec2
+
